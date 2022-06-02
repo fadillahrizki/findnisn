@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find NISN</title>
+    <script src="fireworks.js"></script>
+    <style>
+        *{
+            box-sizing: border-box;
+            text-align: center;
+            color: #F7D716;
+            margin:0;
+            padding:0;
+        }
+        body{
+            background-color: #293462;
+            overflow: hidden;
+        }
+        main{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+        #firework{
+            position: absolute;
+            top:0;
+            height: 100vh;
+            width: 100vw;
+            z-index: -1;
+        }
+        .d-none{
+            display: none;
+        }
+        .d-block{
+            display: block;
+        }
+
+        input,button{
+            width: 100%;
+            padding:20px 50px;
+            border:1px solid #293462;
+            color: #293462;
+            border-radius: 50px;
+            font-size: 20px;
+            display: block;
+        }
+
+        form{
+            width: 100%;
+            text-align:center;
+        }
+
+        button{
+            margin-top: 20px;
+            cursor: pointer;
+            transition: .5s;
+            background: #F7D716;
+        }
+
+        button:hover{
+            box-shadow: 1px 1px 8px #F7D716;
+        }
+        
+        #loading,#open,#message{
+            margin:30px 0;
+        }
+
+        @media (max-width:768px){
+            input,button{
+                display: block;
+                font-size: 16px;
+                padding:15px 30px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <main>
+        <img src="loading.gif" id="loading" class="d-none" alt="Loading" width="100">
+    
+        <h2 id="message" class="d-none"></h2>
+        <button class="d-none" id="open">Buka</button>
+    
+        <form onsubmit="handleSubmit(event)">
+            <input type="number" placeholder="Masukkan NISN">
+            <button>Submit</button>
+        </form>
+    </main>
+
+    <div id="firework"></div>
+
+    <script>
+
+        var data = [
+            {NISN:123, nama:"Rizky Fadillah"},
+            {NISN:345, nama:"Joe Fadillah"},
+            {NISN:567, nama:"John Fadillah"}
+        ]
+
+        var loading = document.querySelector("#loading")
+        var message = document.querySelector("#message")
+        var btnOpen = document.querySelector("#open")
+        var form = document.querySelector("form")
+        var clicked = 0
+
+        const container = document.querySelector('#firework')
+        const fireworks = new Fireworks(container)
+        
+        const timeout = s => new Promise(resolve => setTimeout(resolve, s*1000));
+
+        async function handleSubmit(e){
+            e.preventDefault()
+            
+            loading.classList.remove('d-none')
+            
+            const NISN = e.target[0]
+            const found = data.filter(dt=>dt.NISN==NISN.value)        
+            
+            await timeout(1)
+            
+            message.classList.remove('d-none')
+            
+            if(found.length){
+
+                btnOpen.addEventListener('click', function () {
+
+                    clicked++
+
+                    if (clicked == 4)
+                        message.innerHTML = "Kok gak bisa kebuka ya. Cak tes lagi"
+
+                    if (clicked == 8) {
+                        btnOpen.classList.add('d-none')
+                        message.innerHTML = `Selamat ${found[0].nama}, Kamu dinyatakan lulus, Horeee. Jangan lupa lah makan makannya :D`
+                        fireworks.start()
+                    }
+
+                })
+
+                form.classList.add('d-none')
+                message.innerHTML = `Hai ${found[0].nama}. Cak kami cek dulu ya kamu lulus apa gak.`
+                await timeout(10)
+                message.innerHTML = "Kok data kelulusannya belum ketemu ya. Apa jangan jangan kamu gak lulus. Cak tunggu biar kami cek sekali lagi"
+                await timeout(10)
+                message.innerHTML = "Nah ketemu nih. Cak klik buka"
+                btnOpen.classList.remove('d-none')
+            }else{
+                message.innerHTML = "Maaf! NISN yang kamu masukkan tidak valid"
+            }
+            
+            loading.classList.add('d-none')
+        }
+
+    </script>
+    
+</body>
+</html>

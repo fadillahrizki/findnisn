@@ -1,4 +1,4 @@
-package com.htd.findnisn
+package com.htd.sipsans
 
 import android.os.Bundle
 import android.view.View

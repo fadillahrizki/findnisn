@@ -71,6 +71,10 @@
             margin:30px 0;
         }
 
+        .images{
+            margin:20px 0;
+        }
+
         @media (max-width:768px){
             input,button{
                 display: block;
@@ -84,8 +88,13 @@
 <body>
 
     <main>
+        <div class="images">
+            <img src="tkj.png" alt="TKJ" width="100">
+            <img src="tkr.png" alt="TKR" width="100">
+        </div>
+
         <img src="loading.gif" id="loading" class="d-none" alt="Loading" width="100">
-    
+
         <h2 id="message" class="d-none"></h2>
         <button class="d-none" id="open">Buka</button>
     
@@ -97,14 +106,9 @@
 
     <div id="firework"></div>
 
+    <script src="NISN.js"></script>
+
     <script>
-
-        var data = [
-            {NISN:123, nama:"Rizky Fadillah"},
-            {NISN:345, nama:"Joe Fadillah"},
-            {NISN:567, nama:"John Fadillah"}
-        ]
-
         var loading = document.querySelector("#loading")
         var message = document.querySelector("#message")
         var btnOpen = document.querySelector("#open")
